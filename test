@@ -1,0 +1,18 @@
+
+To convert the arccosine function (cos^-1(x)) into an exponential string symbol in Python, you can use the sympy library. Here's an example:
+
+python
+Copy code
+from sympy import symbols, acos, exp
+
+# Define the variable
+x = symbols('x')
+
+# Calculate arccosine
+cos_inv_x = acos(x)
+
+# Convert arccosine to exponential form
+exp_symbol = exp(cos_inv_x)
+
+# Print the result
+print(exp_symbol)

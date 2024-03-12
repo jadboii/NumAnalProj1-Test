@@ -16,10 +16,10 @@ class NumberProcessor:
         return rounded_number
 
     def calculate_absolute_error(self, true_value, estimated_value):
-        return abs(true_value - estimated_value)
+        return (abs(true_value - estimated_value))*10
 
     def calculate_relative_error(self, absolute_error, estimated_value):
-        return absolute_error / abs(estimated_value)
+        return (absolute_error / abs(estimated_value))*10
 
     def calculate_fraction(self, numerator, denominator):
         try:
@@ -86,19 +86,19 @@ class NumberProcessorApp:
             result_text += f"Chopped Number: {chopped_result}\n"
             result_text += f"Rounded Number: {rounded_result}\n\n"
 
-            result_text += f"Absolute Error (Chopping): {absolute_error_chop}\n"
-            result_text += f"Relative Error (Chopping): {relative_error_chop}\n\n"
+            result_text += f"Absolute Error (Chopping): {absolute_error_chop}%\n"
+            result_text += f"Relative Error (Chopping): {relative_error_chop}%\n\n"
 
-            result_text += f"Absolute Error (Rounding): {absolute_error_round}\n"
-            result_text += f"Relative Error (Rounding): {relative_error_round}"
+            result_text += f"Absolute Error (Rounding): {absolute_error_round}%\n"
+            result_text += f"Relative Error (Rounding): {relative_error_round}%"
 
             self.result_label.config(text=result_text)
         except ValueError:
             self.result_label.config(text="Invalid input. Please enter a valid float number.")
 
     def get_fraction_input(self):
-        numerator = simpledialog.askinteger("Fraction Input", "Enter numerator:")
-        denominator = simpledialog.askinteger("Fraction Input", "Enter denominator:")
+        numerator = simpledialog.askfloat("Fraction Input", "Enter numerator:")
+        denominator = simpledialog.askfloat("Fraction Input", "Enter denominator:")
         if numerator is not None and denominator is not None:
             processor = NumberProcessor(self.user_input_var.get())
             fraction_result = processor.calculate_fraction(numerator, denominator)

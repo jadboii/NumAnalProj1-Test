@@ -26,7 +26,7 @@ class NumberProcessor:
             fraction_result = sp.Rational(numerator, denominator)
             return float(fraction_result)
         except ZeroDivisionError:
-            return None  # Handle division by zero error
+            return None  # Handle division by zero eror
 
     def calculate_square_root(self):
         if self.number >= 0:

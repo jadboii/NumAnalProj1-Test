@@ -16,17 +16,17 @@ class NumberProcessor:
         return rounded_number
 
     def calculate_absolute_error(self, true_value, estimated_value):
-        return (abs(true_value - estimated_value))*10
+        return abs(true_value - estimated_value)
 
     def calculate_relative_error(self, absolute_error, estimated_value):
-        return (absolute_error / abs(estimated_value))*10
+        return (absolute_error / abs(estimated_value)) * 100
 
     def calculate_fraction(self, numerator, denominator):
         try:
             fraction_result = sp.Rational(numerator, denominator)
             return float(fraction_result)
         except ZeroDivisionError:
-            return None  # Handle division by zero eror
+            return None  # Handle division by zero error
 
     def calculate_square_root(self):
         if self.number >= 0:
@@ -35,34 +35,34 @@ class NumberProcessor:
             return None  # Handle square root of negative number
 
 class NumberProcessorApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Machine Problem #1 - Group 9")
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Machine Problem #1 - Group 9")
 
-        self.label = ttk.Label(root, text="Enter a float number:")
+        self.label = ttk.Label(master, text="Enter a float number:")
         self.label.pack(pady=10)
 
-        self.user_input_var = tk.StringVar()
-        self.entry = ttk.Entry(root, textvariable=self.user_input_var)
+        self.user_input_var = tk.DoubleVar()
+        self.entry = ttk.Entry(master, textvariable=self.user_input_var)
         self.entry.pack(pady=10)
 
-        self.decimal_label = ttk.Label(root, text="Enter decimal points:")
+        self.decimal_label = ttk.Label(master, text="Enter decimal points:")
         self.decimal_label.pack(pady=5)
 
         self.decimal_entry_var = tk.StringVar()
-        self.decimal_entry = ttk.Entry(root, textvariable=self.decimal_entry_var)
+        self.decimal_entry = ttk.Entry(master, textvariable=self.decimal_entry_var)
         self.decimal_entry.pack(pady=5)
 
-        self.process_button = ttk.Button(root, text="Process", command=self.process_number)
+        self.process_button = ttk.Button(master, text="Process", command=self.process_number)
         self.process_button.pack(pady=10)
 
-        self.fraction_button = ttk.Button(root, text="Fraction Input", command=self.get_fraction_input)
+        self.fraction_button = ttk.Button(master, text="Fraction Input", command=self.get_fraction_input)
         self.fraction_button.pack(pady=10)
 
-        self.sqrt_button = ttk.Button(root, text="Square Root Input", command=self.get_square_root_input)
+        self.sqrt_button = ttk.Button(master, text="Square Root Input", command=self.get_square_root_input)
         self.sqrt_button.pack(pady=10)
 
-        self.result_label = ttk.Label(root, text="")
+        self.result_label = ttk.Label(master, text="")
         self.result_label.pack(pady=10)
 
     def process_number(self):
@@ -100,7 +100,7 @@ class NumberProcessorApp:
         numerator = simpledialog.askfloat("Fraction Input", "Enter numerator:")
         denominator = simpledialog.askfloat("Fraction Input", "Enter denominator:")
         if numerator is not None and denominator is not None:
-            processor = NumberProcessor(self.user_input_var.get())
+            processor = NumberProcessor(float(self.user_input_var.get()))
             fraction_result = processor.calculate_fraction(numerator, denominator)
             if fraction_result is not None:
                 self.user_input_var.set(str(fraction_result))
@@ -116,7 +116,6 @@ class NumberProcessorApp:
                 self.user_input_var.set(sqrt_result)
             else:
                 self.result_label.config(text="Error: Cannot calculate square root of a negative number")
-
 
 if __name__ == "__main__":
     root = tk.Tk()

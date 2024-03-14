@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, simpledialog
 import sympy as sp
+import math
 
 class NumberProcessor:
     def __init__(self, number):
@@ -62,6 +63,12 @@ class NumberProcessorApp:
         self.sqrt_button = ttk.Button(master, text="Square Root Input", command=self.get_square_root_input)
         self.sqrt_button.pack(pady=10)
 
+        self.pi_button = ttk.Button(master, text="Insert Pi", command=self.insert_pi)
+        self.pi_button.pack(pady=5)
+
+        self.e_button = ttk.Button(master, text="Insert e", command=self.insert_e)
+        self.e_button.pack(pady=5)
+
         self.result_label = ttk.Label(master, text="")
         self.result_label.pack(pady=10)
 
@@ -86,10 +93,10 @@ class NumberProcessorApp:
             result_text += f"Chopped Number: {chopped_result}\n"
             result_text += f"Rounded Number: {rounded_result}\n\n"
 
-            result_text += f"Absolute Error (Chopping): {absolute_error_chop}%\n"
+            result_text += f"Absolute Error (Chopping): {absolute_error_chop}\n"
             result_text += f"Relative Error (Chopping): {relative_error_chop}%\n\n"
 
-            result_text += f"Absolute Error (Rounding): {absolute_error_round}%\n"
+            result_text += f"Absolute Error (Rounding): {absolute_error_round}\n"
             result_text += f"Relative Error (Rounding): {relative_error_round}%"
 
             self.result_label.config(text=result_text)
@@ -116,6 +123,12 @@ class NumberProcessorApp:
                 self.user_input_var.set(sqrt_result)
             else:
                 self.result_label.config(text="Error: Cannot calculate square root of a negative number")
+
+    def insert_pi(self):
+        self.user_input_var.set(math.pi)
+
+    def insert_e(self):
+        self.user_input_var.set(math.e)
 
 if __name__ == "__main__":
     root = tk.Tk()

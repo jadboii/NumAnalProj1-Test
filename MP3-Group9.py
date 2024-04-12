@@ -1,80 +1,49 @@
-import tkinter as tk
 import sympy as sp
 
+class BisectionMethod:
+    def __init__(self, a, b, function_inp, epsilon_error):
+        self.a = a
+        self.b = b
+        self.x = sp.Symbol('x')
+        self.function = sp.sympify(function_inp)
+        self.epsilon_error = epsilon_error
+        self.n = 1
 
-def calculate():
-    polynomial_str = polynomial_entry.get()
-    x_val = float(x_val_entry.get())
-    epsilon_error = float(epsilon_entry.get())
+    def calculate(self):
+        self.c = (self.a + self.b) / 2
+        self.epsilon = self.b - self.a
 
-    x = sp.Symbol('x')
-    polynomial = sp.sympify(polynomial_str)
-    derivative = sp.diff(polynomial, x)
-    poly_solve = polynomial.subs(x, x_val)
-    derivative_solve = derivative.subs(x, x_val)
-    iterate_x = x_val - (poly_solve / derivative_solve)
-    epsilon = abs(iterate_x - x_val)
+        while self.epsilon > self.epsilon_error:
+            self.f_a = self.function.subs(self.x, self.a)
+            self.f_b = self.function.subs(self.x, self.b)
+            self.f_c = self.function.subs(self.x, self.c)
 
-    result_text.config(state=tk.NORMAL)
-    result_text.delete(1.0, tk.END)
-    result_text.insert(tk.END, f"Initial Value (x): {x_val}\n")
-    result_text.insert(tk.END, f"Error: {epsilon_error}\n\n")
-    result_text.insert(tk.END, f"n=1\n")
-    result_text.insert(tk.END, f"xn: {x_val}\n")
-    result_text.insert(tk.END, f"f'(x): {derivative}\n")
-    result_text.insert(tk.END, f"f(xn): {poly_solve}\n")
-    result_text.insert(tk.END, f"f'(xn): {derivative_solve}\n")
-    result_text.insert(tk.END, f"xn+1: {iterate_x}\n")
-    result_text.insert(tk.END, f"|xn+1 - xn|: {epsilon}\n\n")
+            self.print_values()
 
-    n = 1
-    while epsilon >= epsilon_error:
-        n += 1
-        x_val = iterate_x
-        poly_solve = polynomial.subs(x, x_val)
-        derivative_solve = derivative.subs(x, x_val)
-        iterate_x = x_val - (poly_solve / derivative_solve)
-        epsilon = abs(iterate_x - x_val)
-        result_text.insert(tk.END, f"n={n}\n")
-        result_text.insert(tk.END, f"xn: {x_val}\n")
-        result_text.insert(tk.END, f"f'(x): {derivative}\n")
-        result_text.insert(tk.END, f"f(xn): {poly_solve}\n")
-        result_text.insert(tk.END, f"f'(xn): {derivative_solve}\n")
-        result_text.insert(tk.END, f"xn+1: {iterate_x}\n")
-        result_text.insert(tk.END, f"|xn+1 - xn|: {epsilon}\n\n")
+            if self.f_c > 0:
+                self.b = self.c
+            elif self.f_c < 0:
+                self.a = self.c
 
-    result_text.config(state=tk.DISABLED)
+            self.c = (self.a + self.b) / 2
+            self.epsilon = self.b - self.a
+            self.n += 1
+
+    def print_values(self):
+        print(f'\nn = {self.n}\n')
+        print(f'f(a): {self.f_a}')
+        print(f'f(b): {self.f_b}')
+        print(f'C: {self.c}')
+        print(f'f(c): {self.f_c}')
+        print(f'b-a: {self.epsilon}')
 
 
-# Create main window
-root = tk.Tk()
-root.title("Newton-Raphson Method")
+# Taking user input for a, b, and the function
+a = float(input('Enter value of a: '))
+b = float(input('Enter value of b: '))
+function_inp = input('Enter function: ')
+epsilon_error = float(input('Enter epsilon error value: '))
 
-# Polynomial entry
-polynomial_label = tk.Label(root, text="Enter your polynomial:")
-polynomial_label.grid(row=0, column=0, sticky="w")
-polynomial_entry = tk.Entry(root, width=50)
-polynomial_entry.grid(row=0, column=1, columnspan=2)
-
-# Initial value entry
-x_val_label = tk.Label(root, text="Enter initial value:")
-x_val_label.grid(row=1, column=0, sticky="w")
-x_val_entry = tk.Entry(root)
-x_val_entry.grid(row=1, column=1, sticky="w")
-
-# Error entry
-epsilon_label = tk.Label(root, text="Enter error or accuracy value:")
-epsilon_label.grid(row=2, column=0, sticky="w")
-epsilon_entry = tk.Entry(root)
-epsilon_entry.grid(row=2, column=1, sticky="w")
-
-# Calculate button
-calculate_button = tk.Button(root, text="Calculate", command=calculate)
-calculate_button.grid(row=3, column=1, pady=10)
-
-# Result text
-result_text = tk.Text(root, height=20, width=70)
-result_text.grid(row=4, column=0, columnspan=3, padx=10, pady=10)
-result_text.config(state=tk.DISABLED)
-
-root.mainloop()
+# Create an instance of BisectionMethod and perform the calculation
+bisection_method = BisectionMethod(a, b, function_inp, epsilon_error)
+bisection_method.calculate()

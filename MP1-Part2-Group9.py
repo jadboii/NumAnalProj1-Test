@@ -95,7 +95,6 @@ def calculate_approximation():
     d = int(entry_d.get())
 
     user_choice = rounding_chopping_var.get()
-
     taylor_series_approx = taylor_series_arccos(x, c, n)
     absolute_value = calculate_arccos(x)
 
